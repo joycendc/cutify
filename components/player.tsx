@@ -222,7 +222,7 @@ const Player = ({ songs, activeSong }) => {
             </Text>
             <RangeSlider
               id="player-slide"
-              aria-label={["min", "max"]}
+              aria-label="seeker"
               colorScheme="gray"
               borderRadius="10px"
               step={0.1}
