@@ -11,24 +11,36 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     res.json({ error: "Invalid request!" });
     return;
   }
+  const stripe = initStripe(process.env.STRIPE_SECRET_KEY);
   const salt = bcrypt.genSaltSync();
   const { email, password } = req.body;
 
   let user = null;
 
   try {
-    const stripe = initStripe(process.env.STRIPE_SECRET_KEY);
     const customer = await stripe.customers.create({
-      email: req.body.email,
+      email,
     });
 
-    user = await prisma.user.create({
-      data: {
-        email,
-        password: bcrypt.hashSync(password, salt),
-        stripeCustomer: customer.id,
-      },
-    });
+    console.log("customer", customer);
+
+    try {
+      user = await prisma.user.create({
+        data: {
+          firstName: "Test",
+          lastName: "User",
+          email,
+          password: bcrypt.hashSync(password, salt),
+          stripeCustomer: customer.id,
+        },
+      });
+      console.log("user", user);
+    } catch (error) {
+      console.log("error", error);
+      res.status(401);
+      res.json({ error: "User already exists!" });
+      return;
+    }
   } catch (error) {
     res.status(401);
     res.json({ error: "User already exists!" });

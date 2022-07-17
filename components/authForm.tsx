@@ -1,4 +1,4 @@
-import { Box, Flex } from "@chakra-ui/layout";
+import { Box, Flex, Text } from "@chakra-ui/layout";
 import {
   FormLabel,
   Input,
@@ -7,6 +7,7 @@ import {
   FormErrorMessage,
 } from "@chakra-ui/react";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { auth } from "../lib/mutations";
@@ -75,6 +76,18 @@ const AuthForm = ({ mode }: { mode: "signin" | "signup" }) => {
               </Button>
             </FormControl>
           </form>
+          {mode === "signin" ? (
+            <Link href="/signup" passHref>
+              <Text
+                cursor="pointer"
+                textAlign="center"
+                textDecoration="underline"
+                mt="10px"
+              >
+                No account? Signup
+              </Text>
+            </Link>
+          ) : null}
         </Box>
       </Flex>
     </Box>
