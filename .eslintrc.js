@@ -21,6 +21,7 @@ module.exports = {
     "react/no-array-index-key": "off",
     "import/prefer-default-export": "off",
     "no-param-reassign": "off",
+    "no-nested-array": "off",
     "import/extensions": [
       "error",
       "ignorePackages",
