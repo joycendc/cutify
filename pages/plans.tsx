@@ -8,13 +8,12 @@ import plans from "../data/plans";
 const Plans = () => {
   const checkout = async (planId) => {
     const response = await fetch(
-      `http://localhost:3000/api/subscription/${planId}`,
+      `https://cutify-dev.vercel.app/api/subscription/${planId}`,
       {
         method: "GET",
       }
     );
     const data = await response.json();
-    console.log("data", data);
     const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_API_KEY);
     await stripe.redirectToCheckout({ sessionId: data.id });
   };
