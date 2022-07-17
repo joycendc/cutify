@@ -1,18 +1,19 @@
-import { bcrypt } from "bcrypt";
+import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import cookie from "cookie";
 import { NextApiResponse, NextApiRequest } from "next";
-import prisma from "../../lib/prisma";
+import { prisma } from "../../lib/prisma";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== "POST") {
     res.status(404);
+    res.json({ error: "Invalid request!" });
     return;
   }
   const salt = bcrypt.genSaltSync();
   const { email, password } = req.body;
 
-  let user;
+  let user = null;
 
   try {
     user = await prisma.user.create({
@@ -47,6 +48,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       secure: process.env.NODE_ENV === "production",
     })
   );
+
+  delete user.password;
 
   res.json(user);
 };

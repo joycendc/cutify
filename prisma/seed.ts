@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 
 const run = async () => {
   await Promise.all(
-    artistsData.map(async (artist) => {
+    artistsData?.map(async (artist) => {
       return prisma.artist.upsert({
         where: { name: artist.name },
         update: {},
@@ -31,6 +31,8 @@ const run = async () => {
     create: {
       email: "test@test.com",
       password: bcrypt.hashSync("password", salt),
+      firstName: "Joycen",
+      lastName: "Capili",
     },
   });
 

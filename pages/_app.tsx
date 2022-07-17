@@ -1,7 +1,8 @@
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
-
+import { StoreProvider } from "easy-peasy";
 import PageLayout from "../components/pageLayout";
 import "reset-css";
+import { store } from "../lib/store";
 
 const MyApp = ({ Component, pageProps }) => {
   const theme = extendTheme({
@@ -19,11 +20,17 @@ const MyApp = ({ Component, pageProps }) => {
       },
       components: {
         Button: {
+          baseStyle: {
+            _focus: {
+              outline: "none !important",
+              boxShadow: "0 0 0 0 rgba(0, 0, 0, 0) !important",
+            },
+          },
           variants: {
             link: {
               ":focus": {
-                outline: "none",
-                boxShadow: "none",
+                outline: "0 !important",
+                boxShadow: "0 0 0 0 rgba(0, 0, 0, 0) !important",
               },
             },
           },
@@ -33,9 +40,15 @@ const MyApp = ({ Component, pageProps }) => {
   });
   return (
     <ChakraProvider theme={theme}>
-      <PageLayout>
-        <Component {...pageProps} />
-      </PageLayout>
+      <StoreProvider store={store}>
+        {Component.authPage ? (
+          <Component {...pageProps} />
+        ) : (
+          <PageLayout>
+            <Component {...pageProps} />
+          </PageLayout>
+        )}
+      </StoreProvider>
     </ChakraProvider>
   );
 };

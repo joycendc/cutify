@@ -5,13 +5,13 @@ import Sidebar from "./sidebar";
 const PageLayout = ({ children }) => {
   return (
     <Box width="100vw" height="100vh">
-      <Box position="absolute" top="0" width="250px" height="100%" mb="100px">
+      <Box position="absolute" top="0" width="230px" height="full" mb="90px">
         <Sidebar />
       </Box>
-      <Box height="100%" marginLeft="250px" mb="100px">
+      <Box height="full" marginLeft="230px" mb="90px">
         {children}
       </Box>
-      <Box position="absolute" bottom="0" height="100px" width="100%">
+      <Box position="absolute" bottom="0" height="90px" width="full">
         <BottomBar />
       </Box>
     </Box>
