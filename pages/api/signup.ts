@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import cookie from "cookie";
 import { NextApiResponse, NextApiRequest } from "next";
+import initStripe from "stripe";
 import { prisma } from "../../lib/prisma";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -16,10 +17,16 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   let user = null;
 
   try {
+    const stripe = initStripe(process.env.STRIPE_SECRET_KEY);
+    const customer = await stripe.customers.create({
+      email: req.body.email,
+    });
+
     user = await prisma.user.create({
       data: {
         email,
         password: bcrypt.hashSync(password, salt),
+        stripeCustomer: customer.id,
       },
     });
   } catch (error) {

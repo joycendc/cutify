@@ -10,6 +10,7 @@ const plans = [
       "Download 30 songs on 1 mobile device",
     ],
     warn: false,
+    price: "price_1LMW3QIqWVszxSf6qbb2TP97",
   },
   {
     firstText: "2 months for ₱149 with e-wallets and mobile",
@@ -24,6 +25,7 @@ const plans = [
       "One-time or subscription plans",
     ],
     warn: true,
+    price: "price_1LMS2NIqWVszxSf6sXZN5I5y",
   },
   {
     firstText: "2 months for ₱185 with e-wallets and mobile",
@@ -35,6 +37,7 @@ const plans = [
       "Ad-free music listening, play offline, on-demand playback",
     ],
     warn: true,
+    price: "price_1LMW7nIqWVszxSf69quuaBnC",
   },
   {
     firstText: "2 months for ₱185 with e-wallets and mobile",
@@ -47,6 +50,7 @@ const plans = [
       "Ad-free music listening, play offline, on-demand playback",
     ],
     warn: true,
+    price: "price_1LMS8HIqWVszxSf6WmeVf1qW",
   },
 ];
 

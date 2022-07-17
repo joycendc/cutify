@@ -9,14 +9,15 @@ datasource db {
 }
 
 model User {
-  id        Int        @id @default(autoincrement())
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  email     String     @unique
-  password  String
-  firstName String
-  lastName  String
-  playlists Playlist[]
+  id             Int        @id @default(autoincrement())
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+  email          String     @unique
+  password       String
+  firstName      String
+  lastName       String
+  stripeCustomer String?
+  playlists      Playlist[]
 }
 
 model Song {

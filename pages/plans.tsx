@@ -2,9 +2,22 @@ import { Box, Flex, LinkBox, LinkOverlay, Text } from "@chakra-ui/layout";
 import { Button } from "@chakra-ui/react";
 import Link from "next/link";
 import { MdCheck } from "react-icons/md";
+import { loadStripe } from "@stripe/stripe-js";
 import plans from "../data/plans";
 
 const Plans = () => {
+  const checkout = async (planId) => {
+    const response = await fetch(
+      `http://localhost:3000/api/subscription/${planId}`,
+      {
+        method: "GET",
+      }
+    );
+    const data = await response.json();
+    console.log("data", data);
+    const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_API_KEY);
+    await stripe.redirectToCheckout({ sessionId: data.id });
+  };
   return (
     <Box my="60px">
       <Flex flexDir="column" align="center" justify="center" color="black">
@@ -100,6 +113,7 @@ const Plans = () => {
                 bg="black"
                 color="white"
                 variant="solid"
+                onClick={() => checkout(plan.price)}
               >
                 Get Started
               </Button>
