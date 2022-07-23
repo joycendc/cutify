@@ -102,7 +102,7 @@ const GradientLayout = ({
         <Flex
           top="0"
           right="0"
-          w="calc(100vw - 230px)"
+          w="calc(100vw - 250px)"
           position="fixed"
           alignItems="center"
           justifyContent="space-between"
@@ -213,7 +213,7 @@ const GradientLayout = ({
                     borderRadius={10}
                     position="absolute"
                     top="100%"
-                    left="-60%"
+                    right="0"
                     w="max-content"
                     mt="10px"
                     p="5px"

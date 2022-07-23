@@ -33,6 +33,7 @@ const Plans = () => {
         justify="center"
         gap="18px"
         mt="40px"
+        px="50px"
       >
         {plans?.map((plan, i) => (
           <Flex

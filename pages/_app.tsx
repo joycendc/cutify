@@ -18,20 +18,14 @@ const MyApp = ({ Component, pageProps }) => {
         800: "#424242",
         900: "#212121",
       },
-      components: {
-        Button: {
-          baseStyle: {
+    },
+    components: {
+      Button: {
+        variants: {
+          link: {
             _focus: {
               outline: "none !important",
               boxShadow: "0 0 0 0 rgba(0, 0, 0, 0) !important",
-            },
-          },
-          variants: {
-            link: {
-              ":focus": {
-                outline: "0 !important",
-                boxShadow: "0 0 0 0 rgba(0, 0, 0, 0) !important",
-              },
             },
           },
         },
