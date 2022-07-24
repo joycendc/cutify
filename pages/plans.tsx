@@ -6,13 +6,12 @@ import { loadStripe } from "@stripe/stripe-js";
 import plans from "../data/plans";
 
 const Plans = () => {
+  const baseURL = process.env.NEXT_PUBLIC_BASE_URL;
+
   const checkout = async (planId) => {
-    const response = await fetch(
-      `https://cutify-dev.vercel.app/api/subscription/${planId}`,
-      {
-        method: "GET",
-      }
-    );
+    const response = await fetch(`${baseURL}/api/subscription/${planId}`, {
+      method: "GET",
+    });
     const data = await response.json();
     const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_API_KEY);
     await stripe.redirectToCheckout({ sessionId: data.id });

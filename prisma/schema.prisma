@@ -16,7 +16,9 @@ model User {
   password       String
   firstName      String
   lastName       String
-  stripeCustomer String?
+  stripeCustomer String?    @unique
+  isSubscribed   Boolean?
+  interval       String?
   playlists      Playlist[]
 }
 

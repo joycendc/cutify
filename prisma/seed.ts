@@ -33,6 +33,7 @@ const run = async () => {
       password: bcrypt.hashSync("password", salt),
       firstName: "Joycen",
       lastName: "Capili",
+      stripeCustomer: "cus_M4f1vQlMNgQ4VF",
     },
   });
 

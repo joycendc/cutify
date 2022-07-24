@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "User" ALTER COLUMN "interval" DROP NOT NULL,
+ALTER COLUMN "isSubscribed" DROP NOT NULL;

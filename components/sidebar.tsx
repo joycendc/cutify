@@ -123,30 +123,34 @@ const Sidebar = () => {
             <CircularProgress size="30px" isIndeterminate color="green.300" />
           </Center>
         ) : (
-          <List>
-            {playlists?.map((playlist) => (
-              <ListItem
-                key={playlist.id}
-                fontSize="16px"
-                padding="10px"
-                paddingY="5px"
-              >
-                <LinkBox>
-                  <Link
-                    href={{
-                      pathname: `/playlist/${playlist.id}`,
-                      query: { id: playlist.id },
-                    }}
-                    passHref
+          <Box>
+            {playlists?.length ? (
+              <List>
+                {playlists.map((playlist) => (
+                  <ListItem
+                    key={playlist.id}
+                    fontSize="16px"
+                    padding="10px"
+                    paddingY="5px"
                   >
-                    <LinkOverlay>
-                      <Text color="white">{playlist.name}</Text>
-                    </LinkOverlay>
-                  </Link>
-                </LinkBox>
-              </ListItem>
-            ))}
-          </List>
+                    <LinkBox>
+                      <Link
+                        href={{
+                          pathname: `/playlist/${playlist.id}`,
+                          query: { id: playlist.id },
+                        }}
+                        passHref
+                      >
+                        <LinkOverlay>
+                          <Text color="white">{playlist.name}</Text>
+                        </LinkOverlay>
+                      </Link>
+                    </LinkBox>
+                  </ListItem>
+                ))}
+              </List>
+            ) : null}
+          </Box>
         )}
       </Box>
     </Flex>

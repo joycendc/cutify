@@ -6,6 +6,7 @@ import { useStoreActions } from "easy-peasy";
 import GradientLayout from "../components/gradientLayout";
 import { useMe } from "../lib/hooks";
 import { prisma } from "../lib/prisma";
+import { validateToken } from "../lib/auth";
 
 const Home = ({ artists, songs }) => {
   const { user, isLoading } = useMe();
@@ -161,7 +162,17 @@ const Home = ({ artists, songs }) => {
   );
 };
 
-export const getServerSideProps = async () => {
+export const getServerSideProps = async ({ req }) => {
+  try {
+    validateToken(req.cookies.CUTIFY_ACCESS_TOKEN);
+  } catch (error) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/signin",
+      },
+    };
+  }
   const artists = await prisma.artist.findMany({});
   const songs = await prisma.song.findMany({});
 

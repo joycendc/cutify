@@ -1,8 +1,18 @@
-import { Box, Flex, List, ListItem, ListIcon, Text } from "@chakra-ui/layout";
+import {
+  Box,
+  Flex,
+  List,
+  ListItem,
+  ListIcon,
+  Text,
+  LinkBox,
+  LinkOverlay,
+} from "@chakra-ui/layout";
 import { Avatar, Image, Skeleton, IconButton } from "@chakra-ui/react";
 import { useStoreState, useStoreActions } from "easy-peasy";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import {
   MdArrowDropDown,
   MdArrowDropUp,
@@ -160,20 +170,22 @@ const GradientLayout = ({
             ) : null}
           </Flex>
           <Flex gap="30px">
-            <Flex
-              bg="transparent"
-              borderRadius={20}
-              mr="5px"
-              onClick={() => router.push("/plans")}
-              cursor="pointer"
-              px="15px"
-              border="1px solid #666"
-              align="center"
-            >
-              <Text fontSize="sm" fontWeight="600" lineHeight="20px">
-                Upgrade
-              </Text>
-            </Flex>
+            {user?.isSubscribed ? null : (
+              <Flex
+                bg="transparent"
+                borderRadius={20}
+                mr="5px"
+                onClick={() => router.push("/plans")}
+                cursor="pointer"
+                px="15px"
+                border="1px solid #666"
+                align="center"
+              >
+                <Text fontSize="sm" fontWeight="600" lineHeight="20px">
+                  Upgrade
+                </Text>
+              </Flex>
+            )}
             <Skeleton isLoaded={!userLoading}>
               <Flex
                 alignItems="center"
@@ -223,23 +235,29 @@ const GradientLayout = ({
                     <List>
                       {menu.map((item) => (
                         <ListItem _hover={{ bg: "gray.700" }} key={item.name}>
-                          <Flex
-                            justifyContent="space-between"
-                            alignItems="center"
-                            p="10px"
-                            pr="0px"
-                          >
-                            <Text fontSize="sm" mr="15px">
-                              {item.name}
-                            </Text>
-                            {item.hasIcon ? (
-                              <ListIcon
-                                as={MdOutlineOpenInNew}
-                                w="20px"
-                                h="20px"
-                              />
-                            ) : null}
-                          </Flex>
+                          <LinkBox>
+                            <Link href={item?.route || "/"} passHref>
+                              <LinkOverlay>
+                                <Flex
+                                  justifyContent="space-between"
+                                  alignItems="center"
+                                  p="10px"
+                                  pr="0px"
+                                >
+                                  <Text fontSize="sm" mr="15px">
+                                    {item.name}
+                                  </Text>
+                                  {item.hasIcon ? (
+                                    <ListIcon
+                                      as={MdOutlineOpenInNew}
+                                      w="20px"
+                                      h="20px"
+                                    />
+                                  ) : null}
+                                </Flex>
+                              </LinkOverlay>
+                            </Link>
+                          </LinkBox>
                         </ListItem>
                       ))}
                     </List>

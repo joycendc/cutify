@@ -10,6 +10,7 @@ export const menu = [
   {
     name: "Account",
     hasIcon: true,
+    route: "/account",
   },
   {
     name: "Profile",
