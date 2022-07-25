@@ -180,22 +180,25 @@ const GradientLayout = ({
             ) : null}
           </Flex>
           <Flex gap="30px">
-            {user?.isSubscribed ? null : (
-              <Flex
-                bg="transparent"
-                borderRadius={20}
-                mr="5px"
-                onClick={() => router.push("/plans")}
-                cursor="pointer"
-                px="15px"
-                border="1px solid #666"
-                align="center"
-              >
-                <Text fontSize="sm" fontWeight="600" lineHeight="20px">
-                  Upgrade
-                </Text>
-              </Flex>
-            )}
+            <Skeleton isLoaded={!userLoading}>
+              {user?.isSubscribed ? null : (
+                <Flex
+                  h="full"
+                  bg="transparent"
+                  borderRadius={20}
+                  mr="5px"
+                  onClick={() => router.push("/plans")}
+                  cursor="pointer"
+                  px="15px"
+                  border="1px solid #666"
+                  align="center"
+                >
+                  <Text fontSize="sm" fontWeight="600" lineHeight="20px">
+                    Upgrade
+                  </Text>
+                </Flex>
+              )}
+            </Skeleton>
             <Skeleton isLoaded={!userLoading}>
               <Flex
                 alignItems="center"

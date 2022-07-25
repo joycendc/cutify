@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/layout";
+import { Box, Flex, Text } from "@chakra-ui/layout";
 import GradientLayout from "../../components/gradientLayout";
 import { prisma } from "../../lib/prisma";
 import { validateToken } from "../../lib/auth";
@@ -6,7 +6,14 @@ import SongsTable from "../../components/songsTable";
 import getRandomColor from "../../lib/randomColor";
 
 const Playlist = ({ playlist }) => {
-  const color = getRandomColor(playlist.id);
+  const color = getRandomColor(playlist?.id);
+
+  if (!playlist)
+    return (
+      <Flex justify="center" align="center" h="calc(100vh - 90px)" color="#fff">
+        <Text color="black">Nothing to show</Text>
+      </Flex>
+    );
 
   return (
     <Box h="calc(100vh - 90px)" color="#fff">

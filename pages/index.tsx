@@ -55,7 +55,7 @@ const Home = ({ artists, songs }) => {
               </Box>
             </Flex>
           </Box>
-          <Flex flexWrap="wrap" gap="18px" my="10px">
+          <Flex flexWrap="wrap" gap="16px" my="10px">
             {artists.map((artist) => (
               <LinkBox
                 key={artist.id}
