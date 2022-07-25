@@ -1,5 +1,4 @@
 import { Box, Divider, Flex, Text } from "@chakra-ui/layout";
-import { Button } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useMe } from "../lib/hooks";
 
@@ -17,7 +16,7 @@ const Account = () => {
   };
 
   return (
-    <Box h="calc(100vh - 90px)" py="30px" px="150px" overflowY="scroll">
+    <Box h="full" py="30px" px="300px" overflowY="scroll">
       <Text color="black" fontSize="5xl" fontWeight="bold">
         Account Overview
       </Text>
@@ -74,6 +73,7 @@ const Account = () => {
             flexDir="column"
             borderRadius="10px"
             my="30px"
+            boxShadow="-1px 2px 10px 1px rgba(0,0,0,0.33)"
           >
             <Box py="80px" px="30px">
               <Text color="black" fontSize="5xl" fontWeight="900">
@@ -102,5 +102,7 @@ const Account = () => {
     </Box>
   );
 };
+
+Account.authPage = true;
 
 export default Account;
