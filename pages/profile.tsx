@@ -1,64 +1,52 @@
 import Link from "next/link";
 import { Box, Flex, LinkBox, LinkOverlay, Text } from "@chakra-ui/layout";
-import { Avatar } from "@chakra-ui/react";
-import { useState } from "react";
-import getRandomColor from "../lib/randomColor";
+import { Avatar, Image } from "@chakra-ui/react";
+import { MdFavorite, MdMoreHoriz } from "react-icons/md";
+import { useStoreActions } from "easy-peasy";
 import GradientLayout from "../components/gradientLayout";
-import SongCard from "../components/songCard";
 import { useMe } from "../lib/hooks";
 import { prisma } from "../lib/prisma";
 import { validateToken } from "../lib/auth";
 
 const Home = ({ artists, songs }) => {
   const { user, isLoading } = useMe();
-  const [color, setColor] = useState("gray");
+  const playSongs = useStoreActions(
+    (actions: any) => actions.changeActiveSongs
+  );
+  const setActiveSong = useStoreActions(
+    (actions: any) => actions.changeActiveSong
+  );
+  const changePlayState = useStoreActions(
+    (actions: any) => actions.changePlayState
+  );
 
-  const handleHover = (id: Number) => {
-    setColor(getRandomColor(id));
-  };
-
-  const handleUnhover = () => {
-    setColor("gray");
+  const playSong = (activeSong?) => {
+    setActiveSong(activeSong || songs[0]);
+    playSongs(songs);
+    changePlayState(true);
   };
 
   return (
     <Box h="calc(100vh - 90px)" color="#fff">
       <GradientLayout
-        color={color}
+        color="gray"
         image="https://bit.ly/dan-abramov"
         subtitle="Profile"
         title={`${user?.firstName}`}
-        description="15 Public Playlist"
+        description="9 Following"
         roundImage
         isLoading={isLoading}
         songs={songs}
-        home={true}
       >
-        <Box my="20px" mx="30px">
-          <Box>
-            <Text fontWeight="700" fontSize="3xl" mb="20px">
-              Hello, {user?.firstName}
-            </Text>
+        <Box p="20px" bg="rgba(0,0,0,0.5)">
+          <Box borderRadius="50%">
+            <MdMoreHoriz size={20} />
           </Box>
-          <Flex flexWrap="wrap">
-            {songs?.map((song, i: Number) => (
-              <SongCard
-                song={song}
-                key={i}
-                songs={songs}
-                handleHover={handleHover}
-                handleUnhover={handleUnhover}
-              />
-            ))}
-          </Flex>
-        </Box>
-        <Box p="20px">
           <Box mt="15px">
-            <Flex justifyContent="space-between" alignItems="center">
+            <Flex justifyContent="space-between" alignItems="flex-end">
               <Box>
-                <Text fontWeight="700" fontSize="2xl" mb="20px">
-                  Suggested Artist
-                </Text>
+                <Text fontWeight="bold">Top artists this month</Text>
+                <Text fontSize="xs">Only visible to you</Text>
               </Box>
               <Box cursor="pointer">
                 <Text fontSize="xs" color="gray.400" fontWeight="bold">
@@ -112,6 +100,62 @@ const Home = ({ artists, songs }) => {
               </LinkBox>
             ))}
           </Flex>
+          <Box mt="25px">
+            <Flex justifyContent="space-between" alignItems="flex-end">
+              <Box>
+                <Text fontWeight="bold">Top tracks this month</Text>
+                <Text fontSize="xs">Only visible to you</Text>
+              </Box>
+              <Box cursor="pointer">
+                <Text fontSize="xs" color="gray.400" fontWeight="bold">
+                  SEE ALL
+                </Text>
+              </Box>
+            </Flex>
+            <Box my="20px">
+              {songs?.map((song, i) => (
+                <Flex
+                  key={i}
+                  py="5px"
+                  _hover={{ bg: "gray.700" }}
+                  alignItems="center"
+                  cursor="pointer"
+                  onClick={() => playSong(song)}
+                >
+                  <Flex flex={4} ml="5px" alignItems="center" gap="10px">
+                    <Text textAlign="right" width="1.5em">
+                      {i + 1}
+                    </Text>
+                    <Image
+                      boxSize="35px"
+                      src={`https://picsum.photos/400?random=${song.id}`}
+                      alt={song.name}
+                    />
+                    <Box>
+                      <Text lineHeight="16px" fontSize="s" fontWeight="bold">
+                        {song.name}
+                      </Text>
+                    </Box>
+                  </Flex>
+                  <Text flex={2} color="gray.400">
+                    Artist
+                  </Text>
+                  <Flex
+                    flex={1}
+                    alignItems="center"
+                    justifyContent="flex-end"
+                    mr="35px"
+                    gap="15px"
+                  >
+                    <MdFavorite size={14} color="#1DB954" />
+                    <Text color="gray.500" fontSize="xs">
+                      1:09
+                    </Text>
+                  </Flex>
+                </Flex>
+              ))}
+            </Box>
+          </Box>
         </Box>
       </GradientLayout>
     </Box>

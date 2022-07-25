@@ -1,6 +1,14 @@
 import { NextResponse } from "next/server";
 
-const signedInPages = ["/", "/playlist", "/library", "/plans", "/account"];
+const signedInPages = [
+  "/",
+  "/playlist",
+  "/library",
+  "/plans",
+  "/account",
+  "/profile",
+  "/search",
+];
 
 const handler = (req) => {
   if (signedInPages.find((page) => page === req.nextUrl.pathname)) {

@@ -12,12 +12,14 @@ import {
 } from "@chakra-ui/layout";
 import { CircularProgress } from "@chakra-ui/react";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import Link from "next/link";
 import { usePlaylist } from "../lib/hooks";
 import { navMenu, otherMenu } from "../data/menu";
 
 const Sidebar = () => {
   const { playlists, isLoading } = usePlaylist();
+  const router = useRouter();
 
   return (
     <Flex
@@ -48,14 +50,22 @@ const Sidebar = () => {
                     <Flex alignItems="center">
                       <ListIcon
                         as={menu.icon}
-                        color="var(--my-color)"
+                        color={
+                          router.pathname === menu.route
+                            ? "white"
+                            : "var(--my-color)"
+                        }
                         marginRight="15px"
                         boxSize={30}
                       />
                       <Text
                         fontWeight="bold"
                         fontSize="sm"
-                        color="var(--my-color)"
+                        color={
+                          router.pathname === menu.route
+                            ? "white"
+                            : "var(--my-color)"
+                        }
                       >
                         {menu.name}
                       </Text>

@@ -15,6 +15,7 @@ export const menu = [
   {
     name: "Profile",
     hasIcon: false,
+    route: "/profile",
   },
   {
     name: "Upgrade to Premium",
@@ -48,7 +49,7 @@ export const otherMenu = [
   {
     name: "Create Playlist",
     icon: MdPlaylistAdd,
-    route: "/",
+    route: "/create-playlist",
   },
   {
     name: "Favorites",

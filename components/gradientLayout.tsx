@@ -8,7 +8,16 @@ import {
   LinkBox,
   LinkOverlay,
 } from "@chakra-ui/layout";
-import { Avatar, Image, Skeleton, IconButton } from "@chakra-ui/react";
+import {
+  Avatar,
+  Image,
+  Skeleton,
+  IconButton,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  InputRightElement,
+} from "@chakra-ui/react";
 import { useStoreState, useStoreActions } from "easy-peasy";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
@@ -18,7 +27,10 @@ import {
   MdArrowDropUp,
   MdChevronLeft,
   MdChevronRight,
+  MdClose,
+  MdImageSearch,
   MdOutlineOpenInNew,
+  MdOutlineSearch,
   MdPauseCircle,
   MdPlayCircle,
 } from "react-icons/md";
@@ -32,13 +44,16 @@ const GradientLayout = ({
   title,
   subtitle,
   description,
+  songs,
   roundImage = false,
   isLoading = false,
-  songs,
+  home = false,
 }) => {
   const baseURL = process.env.NEXT_PUBLIC_BASE_URL;
   const [showMenu, setShowMenu] = useState(false);
+  const [query, setQuery] = useState("");
   const [scrolledPos, setScrolledPos] = useState(0);
+  const search = useRef(null);
   const box = useRef(null);
   const { user, isLoading: userLoading } = useMe();
   const router = useRouter();
@@ -71,6 +86,7 @@ const GradientLayout = ({
 
   useEffect(() => {
     box.current.addEventListener("scroll", handleScroll);
+    search.current?.focus();
   }, []);
 
   useEffect(() => {}, [isPlaying]);
@@ -87,7 +103,6 @@ const GradientLayout = ({
 
   const logout = async (name: String) => {
     if (name === "Logout") {
-      console.log("logout");
       await fetch(`${baseURL}/api/logout`, {
         method: "GET",
       });
@@ -115,10 +130,10 @@ const GradientLayout = ({
       bgGradient={
         scrolledPos > 200
           ? `linear(gray.900 0%, gray.900 100%)`
-          : `linear(${color}.500 0%, ${color}.600 15%, ${color}.700 40%, rgba(0,0,0,0.95) 75%)`
+          : `linear(${color}.600 0%, ${color}.700 15%, ${color}.800 40%, rgba(0,0,0,0.95) 75%)`
       }
     >
-      <Flex flexDir="column" px="30px" h="60%">
+      <Flex flexDir="column" px="30px" h={home ? "60px" : "60%"}>
         <Flex
           top="0"
           right="0"
@@ -128,7 +143,7 @@ const GradientLayout = ({
           justifyContent="space-between"
           px="26px"
           zIndex={1}
-          // opacity={scrolledPos > 0 && scrolledPos < 100 ? "0.5" : "1"}
+          opacity={scrolledPos > 0 && scrolledPos < 100 ? "0.5" : "1"}
           bg={calculateBg()}
         >
           <Flex gap="10px" align="center">
@@ -148,6 +163,38 @@ const GradientLayout = ({
                 <MdChevronRight color="#ccc" size={35} />
               </Box>
             </Flex>
+            {router.pathname === "/search" && (
+              <Box w="350px">
+                <InputGroup>
+                  <InputLeftElement
+                    pointerEvents="none"
+                    children={<MdOutlineSearch color="black" size={25} />}
+                  />
+                  <Input
+                    ref={search}
+                    bg="white"
+                    color="black"
+                    outline="none"
+                    _placeholder={{
+                      color: "gray.700",
+                      fontWeight: "400",
+                      fontSize: "sm",
+                      px: "2px",
+                    }}
+                    placeholder="Artists, songs or podcasts"
+                    borderRadius={25}
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                  />
+                  {query.length ? (
+                    <InputRightElement
+                      onClick={() => setQuery("")}
+                      children={<MdClose color="black" size={25} />}
+                    />
+                  ) : null}
+                </InputGroup>
+              </Box>
+            )}
             {scrolledPos > 250 ? (
               <Flex align="center">
                 <Box _hover={{ transform: "scale(1.05)" }} mr="10px">
@@ -235,48 +282,52 @@ const GradientLayout = ({
                 {showMenu ? (
                   <Box
                     bg="gray.800"
-                    borderRadius={10}
+                    borderRadius={5}
                     position="absolute"
                     top="100%"
                     right="0"
-                    w="max-content"
+                    w="200px"
                     mt="10px"
                     p="5px"
                     color="gray.200"
                     boxShadow="-1px 10px 20px 1px rgba(0,0,0,0.33)"
                   >
                     <List>
-                      {menu.map((item) => (
-                        <ListItem
-                          _hover={{ bg: "gray.700" }}
-                          key={item.name}
-                          onClick={() => logout(item.name)}
-                        >
-                          <LinkBox>
-                            <Link href={item?.route || "/"} passHref>
-                              <LinkOverlay>
-                                <Flex
-                                  justifyContent="space-between"
-                                  alignItems="center"
-                                  p="10px"
-                                  pr="0px"
-                                >
-                                  <Text fontSize="sm" mr="15px">
-                                    {item.name}
-                                  </Text>
-                                  {item.hasIcon ? (
-                                    <ListIcon
-                                      as={MdOutlineOpenInNew}
-                                      w="20px"
-                                      h="20px"
-                                    />
-                                  ) : null}
-                                </Flex>
-                              </LinkOverlay>
-                            </Link>
-                          </LinkBox>
-                        </ListItem>
-                      ))}
+                      {menu.map((item, i) => {
+                        if (user?.isSubscribed && i === 2) return null;
+                        return (
+                          <ListItem
+                            borderRadius={5}
+                            _hover={{ bg: "gray.700" }}
+                            key={item.name}
+                            onClick={() => logout(item.name)}
+                          >
+                            <LinkBox>
+                              <Link href={item?.route || "/"} passHref>
+                                <LinkOverlay>
+                                  <Flex
+                                    justifyContent="space-between"
+                                    alignItems="center"
+                                    p="10px"
+                                    pr="0px"
+                                  >
+                                    <Text fontSize="sm" mr="15px">
+                                      {item.name}
+                                    </Text>
+                                    {item.hasIcon ? (
+                                      <ListIcon
+                                        as={MdOutlineOpenInNew}
+                                        w="20px"
+                                        h="20px"
+                                      />
+                                    ) : null}
+                                  </Flex>
+                                </LinkOverlay>
+                              </Link>
+                            </LinkBox>
+                          </ListItem>
+                        );
+                      })}
                     </List>
                   </Box>
                 ) : null}
@@ -284,40 +335,42 @@ const GradientLayout = ({
             </Skeleton>
           </Flex>
         </Flex>
-        <Flex flex={1} my="5px" alignItems="flex-end">
-          <Image
-            boxSize="220px"
-            src={image}
-            boxShadow="-1px 10px 20px 1px rgba(0,0,0,0.33)"
-            mb="20px"
-            borderRadius={roundImage ? "full" : "3px"}
-          />
-          <Flex
-            h="full"
-            alignItems="flex-start"
-            justifyContent="flex-end"
-            flexDir="column"
-            px="20px"
-            color="white"
-            mb="20px"
-          >
-            <Skeleton isLoaded={!isLoading} mb="5px">
-              <Text fontSize="11px" casing="uppercase" fontWeight="bold">
-                {subtitle}
-              </Text>
-            </Skeleton>
-            <Skeleton isLoaded={!isLoading} mb="5px">
-              <Text fontSize="100px" fontWeight="bold" lineHeight="90px">
-                {title}
-              </Text>
-            </Skeleton>
-            <Skeleton isLoaded={!isLoading}>
-              <Text mt="10px" fontSize="14px" fontWeight="100">
-                {description}
-              </Text>
-            </Skeleton>
+        {home ? null : (
+          <Flex flex={1} my="5px" alignItems="flex-end">
+            <Image
+              boxSize="220px"
+              src={image}
+              boxShadow="-1px 10px 20px 1px rgba(0,0,0,0.33)"
+              mb="20px"
+              borderRadius={roundImage ? "full" : "3px"}
+            />
+            <Flex
+              h="full"
+              alignItems="flex-start"
+              justifyContent="flex-end"
+              flexDir="column"
+              px="20px"
+              color="white"
+              mb="20px"
+            >
+              <Skeleton isLoaded={!isLoading} mb="5px">
+                <Text fontSize="11px" casing="uppercase" fontWeight="bold">
+                  {subtitle}
+                </Text>
+              </Skeleton>
+              <Skeleton isLoaded={!isLoading} mb="5px">
+                <Text fontSize="100px" fontWeight="bold" lineHeight="90px">
+                  {title}
+                </Text>
+              </Skeleton>
+              <Skeleton isLoaded={!isLoading}>
+                <Text mt="10px" fontSize="14px" fontWeight="100">
+                  {description}
+                </Text>
+              </Skeleton>
+            </Flex>
           </Flex>
-        </Flex>
+        )}
       </Flex>
 
       {children}
