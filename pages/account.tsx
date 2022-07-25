@@ -1,4 +1,5 @@
 import { Box, Divider, Flex, Text } from "@chakra-ui/layout";
+import { MdArrowBack } from "react-icons/md";
 import { useRouter } from "next/router";
 import { useMe } from "../lib/hooks";
 
@@ -17,6 +18,9 @@ const Account = () => {
 
   return (
     <Box h="full" py="30px" px="300px" overflowY="scroll">
+      <Box cursor="pointer" onClick={() => router.push("/")} mb="20px">
+        <MdArrowBack size="30px" />
+      </Box>
       <Text color="black" fontSize="5xl" fontWeight="bold">
         Account Overview
       </Text>
@@ -67,36 +71,69 @@ const Account = () => {
               Manage Subscription
             </Flex>
           </Flex>
-          <Flex
-            w="full"
-            bg="gray.400"
-            flexDir="column"
-            borderRadius="10px"
-            my="30px"
-            boxShadow="-1px 2px 10px 1px rgba(0,0,0,0.33)"
-          >
-            <Box py="80px" px="30px">
-              <Text color="black" fontSize="5xl" fontWeight="900">
-                Cutify Plan
-              </Text>
-            </Box>
-            <Box
-              bg="white"
-              m="2px"
-              py="40px"
-              px="30px"
-              borderBottomRightRadius="10px"
-              borderBottomLeftRadius="10px"
+          {user?.isSubscribed ? (
+            <Flex
+              w="full"
+              bg="gray.400"
+              flexDir="column"
+              borderRadius="10px"
+              my="30px"
+              boxShadow="-1px 2px 10px 1px rgba(0,0,0,0.33)"
             >
-              <Text color="black" fontWeight="400">
-                Play music in shuffle mode only, with ads.
-              </Text>
-              <Divider color="gray.200" my="30px" />
-              <Text color="black" fontSize="xl" fontWeight="bold">
-                P 699
-              </Text>
-            </Box>
-          </Flex>
+              <Box py="80px" px="30px">
+                <Text color="black" fontSize="5xl" fontWeight="900">
+                  Subscribed Plan
+                </Text>
+              </Box>
+              <Box
+                bg="white"
+                m="2px"
+                py="40px"
+                px="30px"
+                borderBottomRightRadius="10px"
+                borderBottomLeftRadius="10px"
+              >
+                <Text color="black" fontWeight="400">
+                  Ad-free music listening
+                </Text>
+                <Divider color="gray.200" my="30px" />
+                <Text color="black" fontSize="xl" fontWeight="bold">
+                  P 200
+                </Text>
+              </Box>
+            </Flex>
+          ) : (
+            <Flex
+              w="full"
+              bg="gray.400"
+              flexDir="column"
+              borderRadius="10px"
+              my="30px"
+              boxShadow="-1px 2px 10px 1px rgba(0,0,0,0.33)"
+            >
+              <Box py="80px" px="30px">
+                <Text color="black" fontSize="5xl" fontWeight="900">
+                  Cutify Free
+                </Text>
+              </Box>
+              <Box
+                bg="white"
+                m="2px"
+                py="40px"
+                px="30px"
+                borderBottomRightRadius="10px"
+                borderBottomLeftRadius="10px"
+              >
+                <Text color="black" fontWeight="400">
+                  Play music in shuffle mode only, with ads.
+                </Text>
+                <Divider color="gray.200" my="30px" />
+                <Text color="black" fontSize="xl" fontWeight="bold">
+                  Free
+                </Text>
+              </Box>
+            </Flex>
+          )}
         </Box>
       ) : null}
     </Box>

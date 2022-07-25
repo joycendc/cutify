@@ -36,6 +36,7 @@ const GradientLayout = ({
   isLoading = false,
   songs,
 }) => {
+  const baseURL = process.env.NEXT_PUBLIC_BASE_URL;
   const [showMenu, setShowMenu] = useState(false);
   const [scrolledPos, setScrolledPos] = useState(0);
   const box = useRef(null);
@@ -82,6 +83,15 @@ const GradientLayout = ({
 
   const pauseSong = () => {
     changePlayState(false);
+  };
+
+  const logout = async (name: String) => {
+    if (name === "Logout") {
+      console.log("logout");
+      await fetch(`${baseURL}/api/logout`, {
+        method: "GET",
+      });
+    }
   };
 
   return (
@@ -234,7 +244,11 @@ const GradientLayout = ({
                   >
                     <List>
                       {menu.map((item) => (
-                        <ListItem _hover={{ bg: "gray.700" }} key={item.name}>
+                        <ListItem
+                          _hover={{ bg: "gray.700" }}
+                          key={item.name}
+                          onClick={() => logout(item.name)}
+                        >
                           <LinkBox>
                             <Link href={item?.route || "/"} passHref>
                               <LinkOverlay>
